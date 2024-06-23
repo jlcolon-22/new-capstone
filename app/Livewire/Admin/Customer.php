@@ -22,6 +22,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Tables\Concerns\InteractsWithTable;
 use App\Models\Customer as ModelCustomer;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 
@@ -86,7 +87,7 @@ class Customer extends Component implements HasForms, HasTable
                         ->title('Created successfully')
                         ->success()
                         ->send();
-                })
+                })->modalWidth(MaxWidth::ExtraLarge)
             ])
             ->heading('Customer Account')
             ->columns([
@@ -103,7 +104,7 @@ class Customer extends Component implements HasForms, HasTable
 
                     ])->schema([
                         TextInput::make('fullname')->label('Fullname')->required(),
-                        TextInput::make('email')->label('Email Address')->email()->required()->unique('customers', 'email'),
+                        TextInput::make('email')->label('Email Address')->email()->required(),
                     ]),
                     Grid::make([
                         'default' => 2,
@@ -121,8 +122,34 @@ class Customer extends Component implements HasForms, HasTable
                         'female' => 'Female',
                     ])->required(),
                     Textarea::make('address')->label('Complete Address')->required(),
-                    TextInput::make('password')->password(true)->revealable()->required(),
-                ]),
+                    TextInput::make('edit_password')->password(true)->revealable(),
+                ])->action(function ($data,$record) {
+                    $customer = $record->update([
+                        'fullname' => $data['fullname'],
+                        'email' =>  $data['email'],
+
+                        'contact' => $data['contact'],
+                        'gender' => $data['gender'],
+                        'birthdate' => $data['birthdate'],
+                        'address' => $data['address'],
+                    ]);
+                    if(!!$data['edit_password'])
+                    {
+                        $record->update([
+                            'password' => Hash::make('edit_password'),
+                        ]);
+                    }
+                    if (!!$data['profile']) {
+                        $record->update([
+                            'profile' => $data['profile']
+                        ]);
+                    }
+
+                    Notification::make()
+                        ->title('Updated successfully')
+                        ->success()
+                        ->send();
+                })->modalWidth(MaxWidth::ExtraLarge),
                 DeleteAction::make()->color(Color::Red),
             ]);
     }

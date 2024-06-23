@@ -1,7 +1,7 @@
 <div x-data="{aside: true}">
     <div class="flex">
         @include('components.layouts.admin.aside')
-        <main class="w-full max-h-[100svh] px-10 pb-10">
+        <main class="w-full max-h-[100svh] px-4 md:px-10 pb-10">
             {{-- top nav --}}
             <div class="flex justify-between items-center py-4">
                 <button x-on:click="aside = !aside">

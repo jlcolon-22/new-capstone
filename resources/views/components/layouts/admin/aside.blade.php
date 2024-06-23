@@ -1,5 +1,5 @@
 <div class="relative" wire:ignore>
-    <aside x-cloak x-transition class="bg-[#072D44] min-w-[300px] max-w-[300px] min-h-[100svh] text-white " :class="aside ? 'hidden lg:block'  : 'block fixed top-0 left-0 z-50 lg:hidden'">
+    <aside x-cloak x-transition class="bg-[#072D44] min-w-[230px] sm:min-w-[270px] max-w-[230px] sm:max-w-[270px] min-h-[100svh] text-white " :class="aside ? 'hidden lg:block'  : 'block fixed top-0 left-0 z-50 lg:hidden'">
         <div class="h-[5rem] flex items-center justify-center">
             <h1 class="text-main font-extrabold text-2xl text-center">ADMIN PANEL</h1>
         </div>
@@ -12,7 +12,7 @@
 
         </button>
         {{-- links --}}
-        <div class="pt-16 space-y-1" x-data="{ employee: false }">
+        <div class="pt-16 space-y-1" x-data="{ employee: {{ request()->routeIs('admin.employee.position') || request()->routeIs('admin.employee.account') ? 'true' : 'false' }}, project: {{ request()->routeIs('admin.project.division') || request()->routeIs('admin.project.team') ? 'true' : 'false' }} }">
             <a href="{{ route('admin.dashboard') }}"
                 class=" flex gap-2 item-center  px-5 py-3 {{ request()->routeIs('admin.dashboard') ? 'border-l-4 border-main font-bold bg-black/40' : 'border-l-4 border-[#072D44] hover:bg-black/40 hover:border-black/40 opacity-70' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -33,7 +33,7 @@
                 <span>Customer Account</span>
             </a>
             <a type="button" x-on:click="employee = !employee"
-                class=" flex gap-2 items-center justify-between cursor-pointer  border-l-4    px-5 py-3 {{ request()->routeIs('admin.login') ? 'border-l-4 border-main font-bold bg-black/40' : 'border-l-4 border-[#072D44] hover:bg-black/40 hover:border-black/40 opacity-70' }}">
+                class=" flex gap-2 items-center justify-between cursor-pointer  border-l-4    px-5 py-3 {{ request()->routeIs('admin.employee.position') || request()->routeIs('admin.employee.account') ? 'border-l-4 border-main font-bold bg-black/40' : 'border-l-4 border-[#072D44] hover:bg-black/40 hover:border-black/40 opacity-70' }}">
                 <div class="flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -52,8 +52,8 @@
             {{-- employee dropdown --}}
             <div x-cloak x-show="employee" x-transition class="space-y-1 px-6">
 
-                <a href=""
-                    class=" flex gap-2 items-center justify-between  w-full   px-5 py-3 {{ request()->routeIs('admin.dashboard') ? 'w-full border-main font-bold ' : 'w-fullborder-[#072D44] hover:bg-black/40 hover:border-black/40 opacity-70' }}">
+                <a href="{{ route('admin.employee.account') }}"
+                    class=" flex gap-2 items-center justify-between  w-full   px-5 py-3 {{ request()->routeIs('admin.employee.account') ? 'w-full border-main font-bold ' : 'w-fullborder-[#072D44] hover:bg-black/40 hover:border-black/40 opacity-70' }}">
                     <div class="flex items-center gap-2">
                         <svg class="size-6 fill-white" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -65,8 +65,8 @@
 
 
                 </a>
-                <a href=""
-                    class=" flex gap-2 items-center justify-between  w-full   px-5 py-3 {{ request()->routeIs('admin.login') ? 'w-full border-main font-bold' : 'w-fullborder-[#072D44] hover:bg-black/40 hover:border-black/40 opacity-70' }}">
+                <a href="{{ route('admin.employee.position') }}"
+                    class=" flex gap-2 items-center justify-between  w-full   px-5 py-3 {{ request()->routeIs('admin.employee.position') ? 'w-full border-main font-bold' : 'w-fullborder-[#072D44] hover:bg-black/40 hover:border-black/40 opacity-70' }}">
                     <div class="flex items-center gap-2">
                         <svg class="size-6 fill-white" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -79,6 +79,69 @@
 
                 </a>
 
+            </div>
+
+
+            {{-- projects --}}
+            <a type="button" x-on:click="project = !project"
+                class=" flex gap-2 items-center justify-between cursor-pointer  border-l-4    px-5 py-3 {{ request()->routeIs('admin.project.team') || request()->routeIs('admin.project.division') ? 'border-l-4 border-main font-bold bg-black/40' : 'border-l-4 border-[#072D44] hover:bg-black/40 hover:border-black/40 opacity-70' }}">
+                <div class="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" />
+                      </svg>
+
+
+                    <span>Project Management </span>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                </svg>
+
+            </a>
+            {{-- projects dropdown --}}
+            <div x-cloak x-show="project" x-transition class="space-y-1 px-6">
+
+                <a href="{{ route('admin.employee.account') }}"
+                    class=" flex gap-2 items-center justify-between  w-full   px-5 py-3 {{ request()->routeIs('admin.employee.account') ? 'w-full border-main font-bold ' : 'w-fullborder-[#072D44] hover:bg-black/40 hover:border-black/40 opacity-70' }}">
+                    <div class="flex items-center gap-2">
+                        <svg class="size-6 fill-white" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M7.5 9.125C8.39746 9.125 9.125 8.39746 9.125 7.5C9.125 6.60254 8.39746 5.875 7.5 5.875C6.60254 5.875 5.875 6.60254 5.875 7.5C5.875 8.39746 6.60254 9.125 7.5 9.125ZM7.5 10.125C8.94975 10.125 10.125 8.94975 10.125 7.5C10.125 6.05025 8.94975 4.875 7.5 4.875C6.05025 4.875 4.875 6.05025 4.875 7.5C4.875 8.94975 6.05025 10.125 7.5 10.125Z" />
+                        </svg>
+
+                        <span>Project List</span>
+                    </div>
+
+
+                </a>
+                <a href="{{ route('admin.project.division') }}"
+                    class=" flex gap-2 items-center justify-between  w-full   px-5 py-3 {{ request()->routeIs('admin.project.division') ? 'w-full border-main font-bold' : 'w-fullborder-[#072D44] hover:bg-black/40 hover:border-black/40 opacity-70' }}">
+                    <div class="flex items-center gap-2">
+                        <svg class="size-6 fill-white" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M7.5 9.125C8.39746 9.125 9.125 8.39746 9.125 7.5C9.125 6.60254 8.39746 5.875 7.5 5.875C6.60254 5.875 5.875 6.60254 5.875 7.5C5.875 8.39746 6.60254 9.125 7.5 9.125ZM7.5 10.125C8.94975 10.125 10.125 8.94975 10.125 7.5C10.125 6.05025 8.94975 4.875 7.5 4.875C6.05025 4.875 4.875 6.05025 4.875 7.5C4.875 8.94975 6.05025 10.125 7.5 10.125Z" />
+                        </svg>
+
+                        <span>Project Divisions</span>
+                    </div>
+
+
+                </a>
+                <a href="{{ route('admin.project.team') }}"
+                class=" flex gap-2 items-center justify-between  w-full   px-5 py-3 {{ request()->routeIs('admin.project.team') ? 'w-full border-main font-bold' : 'w-fullborder-[#072D44] hover:bg-black/40 hover:border-black/40 opacity-70' }}">
+                <div class="flex items-center gap-2">
+                    <svg class="size-6 fill-white" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M7.5 9.125C8.39746 9.125 9.125 8.39746 9.125 7.5C9.125 6.60254 8.39746 5.875 7.5 5.875C6.60254 5.875 5.875 6.60254 5.875 7.5C5.875 8.39746 6.60254 9.125 7.5 9.125ZM7.5 10.125C8.94975 10.125 10.125 8.94975 10.125 7.5C10.125 6.05025 8.94975 4.875 7.5 4.875C6.05025 4.875 4.875 6.05025 4.875 7.5C4.875 8.94975 6.05025 10.125 7.5 10.125Z" />
+                    </svg>
+
+                    <span>Team</span>
+                </div>
+
+
+            </a>
             </div>
         </div>
     </aside>
